@@ -32,7 +32,7 @@ jobs:
       - name: 📡 Run flutter analyze
         working-directory: app_cars_front
         run: |
-          flutter analyze > analysis_output.txt || true
+          flutter analyze > ../analysis_output.txt || true
 
       - name: 📈 Check for code issues
         id: code-issues
@@ -49,4 +49,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: analysis-results
-          path: analysis_output.txt
+          path: app_cars_front/analysis_output.txt
