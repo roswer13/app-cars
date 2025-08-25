@@ -30,11 +30,33 @@ android {
         versionName = flutter.versionName
     }
 
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            resValue("string", "app_name", "App Cars (Dev)")
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+        create("staging") {
+            dimension = "env"
+            resValue("string", "app_name", "App Cars (Staging)")
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-staging"
+        }
+        create("prod") {
+            dimension = "env"
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+        }
+        debug {
+            applicationIdSuffix = ".debug"
         }
     }
 }
