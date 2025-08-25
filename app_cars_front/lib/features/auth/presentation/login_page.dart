@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:app_cars_front/core/core.dart';
 import 'package:app_cars_front/features/features.dart';
@@ -29,16 +30,14 @@ class _LoginPageState extends State<LoginPage> {
             final responseState = state.response;
 
             print('AuthState changed: $responseState');
-            if (responseState is Success) {
-              print('Login successful: ${responseState.data}');
+            if (responseState is Success<TokenResponse>) {
               // If login is successful, save the user session
-              authBloc?.add(
-                AuthSaveUserSession(
-                  response: responseState.data as TokenResponse,
-                ),
-              );
+              authBloc?.add(AuthSaveUserSession(response: responseState.data));
             }
-            if (responseState is Error) {
+            if (responseState is Success<AuthResponse>) {
+              // Navigate to dashboard
+              context.go('/${DashboardPage.routeName}');
+            } else if (responseState is Error) {
               // Show an error message if login fails
               Fluttertoast.showToast(
                 msg: 'Error en inicio de sesión',

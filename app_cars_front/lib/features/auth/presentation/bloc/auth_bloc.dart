@@ -17,11 +17,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final formKey = GlobalKey<FormState>();
 
-  void _onAuthInitialEvent(AuthInitialEvent event, Emitter<AuthState> emit) {
-    emit(state.copyWith(formKey: formKey));
+  void _onAuthInitialEvent(
+    AuthInitialEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(state.copyWith(response: Loading(), formKey: formKey));
+    Resource<AuthResponse> response = await authUseCases.login.run();
+    emit(state.copyWith(response: response, formKey: formKey));
   }
 
-  void _onAuthFormReset(AuthFormReset event, Emitter<AuthState> emit) {}
+  void _onAuthFormReset(AuthFormReset event, Emitter<AuthState> emit) {
+    state.formKey?.currentState?.reset();
+  }
 
   void _onAuthSaveUserSession(
     AuthSaveUserSession event,

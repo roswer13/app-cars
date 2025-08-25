@@ -23,7 +23,7 @@ class CarsApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: blocProviders,
       child: MaterialApp.router(
-        title: 'Flutter Demo',
+        title: 'Cars App',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),

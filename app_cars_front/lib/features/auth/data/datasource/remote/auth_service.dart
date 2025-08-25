@@ -32,7 +32,7 @@ class AuthService {
 
   Future<Resource<AuthResponse>> login(String token) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.get(
         '/user/me/',
         options: Options(headers: {"Authorization": "Token $token"}),
       );
