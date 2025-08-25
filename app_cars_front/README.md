@@ -1,16 +1,23 @@
 # app_cars_front
 
-A new Flutter project.
+This is a Flutter application for managing car listings and user authentication.
 
-## Getting Started
+## Run project
 
-This project is a starting point for a Flutter application.
+The project use flavors for different environments.
 
-A few resources to get you started if this is your first Flutter project:
+For development:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+flutter run --flavor dev -t lib/main_dev.dart
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+For staging:
+```bash
+flutter run --flavor staging -t lib/main_staging.dart
+```
+
+For production:
+```bash
+flutter run --flavor prod -t lib/main_prod.dart
+```
