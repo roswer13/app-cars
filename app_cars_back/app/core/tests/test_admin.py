@@ -3,6 +3,7 @@ Tests for the Django admin modifications.
 """
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from django.test import Client
 
 
@@ -24,3 +25,31 @@ class AdminSiteTests(TestCase):
             password='password123',
             name='Test User'
         )
+
+    def test_users_list(self):
+        """Test that the users are listed on page."""
+        url = reverse('admin:core_user_changelist')
+        res = self.client.get(url)
+
+        # Check that the response is 200 OK
+        self.assertEqual(res.status_code, 200)
+
+        # Check that the user is in the response
+        self.assertContains(res, self.user.name)
+        self.assertContains(res, self.user.account)
+
+    def test_edit_user_page(self):
+        """Test that the edit user page works."""
+        url = reverse('admin:core_user_change', args=[self.user.id])
+        res = self.client.get(url)
+
+        # Check that the response is 200 OK
+        self.assertEqual(res.status_code, 200)
+
+    def test_create_user_page(self):
+        """Test that the create user page works."""
+        url = reverse('admin:core_user_add')
+        res = self.client.get(url)
+
+        # Check that the response is 200 OK
+        self.assertEqual(res.status_code, 200)
