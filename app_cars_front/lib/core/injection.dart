@@ -9,6 +9,7 @@ final locator = GetIt.instance;
 
 @InjectableInit()
 Future<void> configureDependencies(Env envConfig) async {
+  print('Configuring dependencies for environment: ${envConfig.baseUrl}');
   // Dio
   locator.registerLazySingleton<Dio>(
     () => Dio(BaseOptions(baseUrl: envConfig.baseUrl)),
@@ -35,6 +36,7 @@ Future<void> configureDependencies(Env envConfig) async {
     () => AuthUseCases(
       login: LoginUseCase(locator()),
       getToken: GetTokenUseCase(locator()),
+      saveUserSession: SaveUserUsecase(locator()),
     ),
   );
 }

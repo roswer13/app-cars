@@ -11,18 +11,33 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Resource<AuthResponse>> login() async {
-    // Not implemented
-    return Error('Login not implemented');
+    var token = await _secureStorage.read(SecureStorageConstants.token);
+    if (token == null) {
+      return Error('No token found');
+    }
+    return await _authService.login(token);
   }
 
   @override
   Future<bool> logout() async {
-    // Not implemented
-    return false;
+    await _secureStorage.deleteAll();
+    return true;
   }
 
   @override
   Future<Resource<TokenResponse>> getToken(String account, String phone) async {
     return await _authService.getToken(account, phone);
+  }
+
+  @override
+  Future<bool> saveUserSession(
+    String account,
+    String phone,
+    String token,
+  ) async {
+    await _secureStorage.write(SecureStorageConstants.account, account);
+    await _secureStorage.write(SecureStorageConstants.phone, phone);
+    await _secureStorage.write(SecureStorageConstants.token, token);
+    return true;
   }
 }

@@ -7,4 +7,6 @@ abstract class AuthRepository {
   Future<bool> logout();
 
   Future<Resource<TokenResponse>> getToken(String account, String phone);
+
+  Future<bool> saveUserSession(String account, String phone, String token);
 }

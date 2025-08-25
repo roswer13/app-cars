@@ -13,11 +13,9 @@ class AuthService {
       print('Attempting to get token for account: $account and phone: $phone');
 
       final response = await _dio.post(
-        'user/token/',
-        data: {"account": account, "phone": phone},
+        '/user/token/',
+        data: {"account": account, "phone": phone, "password": "root1234"},
       );
-
-      print('Response status: ${response}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         TokenResponse authResponse = TokenResponse.fromJson(response.data);
@@ -29,6 +27,26 @@ class AuthService {
       // Handle error
       print('Error during getToken: $e');
       return Error('An error occurred during getToken: ${e.toString()}');
+    }
+  }
+
+  Future<Resource<AuthResponse>> login(String token) async {
+    try {
+      final response = await _dio.post(
+        '/user/me/',
+        options: Options(headers: {"Authorization": "Token $token"}),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        AuthResponse authResponse = AuthResponse.fromJson(response.data);
+        return Success<AuthResponse>(authResponse);
+      } else {
+        return Error(response.data);
+      }
+    } catch (e) {
+      // Handle error
+      print('Error during login: $e');
+      return Error('An error occurred during login: ${e.toString()}');
     }
   }
 }

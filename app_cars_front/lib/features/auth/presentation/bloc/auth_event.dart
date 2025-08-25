@@ -21,7 +21,7 @@ class AuthFormReset extends AuthEvent {
 }
 
 class AuthSaveUserSession extends AuthEvent {
-  final AuthResponse response;
+  final TokenResponse response;
 
   const AuthSaveUserSession({required this.response});
 

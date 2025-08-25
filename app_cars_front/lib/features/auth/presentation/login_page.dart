@@ -1,8 +1,9 @@
-import 'package:app_cars_front/core/core.dart' show ButtonBase;
-import 'package:app_cars_front/features/features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:app_cars_front/core/core.dart';
+import 'package:app_cars_front/features/features.dart';
 
 class LoginPage extends StatefulWidget {
   static const String routeName = 'login';
@@ -27,6 +28,16 @@ class _LoginPageState extends State<LoginPage> {
           listener: (context, state) {
             final responseState = state.response;
 
+            print('AuthState changed: $responseState');
+            if (responseState is Success) {
+              print('Login successful: ${responseState.data}');
+              // If login is successful, save the user session
+              authBloc?.add(
+                AuthSaveUserSession(
+                  response: responseState.data as TokenResponse,
+                ),
+              );
+            }
             if (responseState is Error) {
               // Show an error message if login fails
               Fluttertoast.showToast(
@@ -37,35 +48,61 @@ class _LoginPageState extends State<LoginPage> {
           },
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Header(),
-                    TextFormField(
-                      decoration: InputDecorations.decoration(
-                        labelText: 'Usuario',
-                        hintText: 'Ingrese su usuario',
-                        prefixIcon: Icons.person,
+              return Form(
+                key: state.formKey,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Header(),
+                      TextFormField(
+                        decoration: InputDecorations.decoration(
+                          labelText: 'Nombre de cuenta',
+                          hintText: 'Ingrese su nombre de cuenta',
+                          prefixIcon: Icons.person,
+                        ),
+                        textInputAction: TextInputAction.next,
+                        onChanged: (text) {
+                          authBloc?.add(
+                            AccountChanged(account: BlocFormItem(value: text)),
+                          );
+                        },
+                        validator: (value) {
+                          return state.account.error;
+                        },
                       ),
-                      textInputAction: TextInputAction.next,
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      decoration: InputDecorations.decoration(
-                        labelText: 'Telefono',
-                        hintText: 'Ingrese su telefono',
-                        prefixIcon: Icons.phone,
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        decoration: InputDecorations.decoration(
+                          labelText: 'Telefono',
+                          hintText: 'Ingrese su telefono',
+                          prefixIcon: Icons.phone,
+                        ),
+                        textInputAction: TextInputAction.done,
+                        onChanged: (text) {
+                          authBloc?.add(
+                            PhoneChanged(phone: BlocFormItem(value: text)),
+                          );
+                        },
+                        validator: (value) {
+                          return state.phone.error;
+                        },
                       ),
-                      textInputAction: TextInputAction.done,
-                    ),
-                    const SizedBox(height: 16),
-                    ButtonBase(
-                      width: double.infinity,
-                      onPressed: () {},
-                      text: 'Ingresar',
-                    ),
-                  ],
+                      const SizedBox(height: 16),
+                      ButtonBase(
+                        isDisabled: state.response is Loading,
+                        isLoading: state.response is Loading,
+                        width: double.infinity,
+                        onPressed: () {
+                          if (state.formKey!.currentState!.validate()) {
+                            // If the form is valid, proceed with login
+                            authBloc?.add(AuthSubmitted());
+                          }
+                        },
+                        text: 'Ingresar',
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

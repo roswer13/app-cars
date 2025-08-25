@@ -1,4 +1,5 @@
 import 'package:app_cars_front/core/util/util.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_cars_front/features/features.dart';
 
@@ -14,14 +15,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSubmitted>(_onAuthSubmitted);
   }
 
-  void _onAuthInitialEvent(AuthInitialEvent event, Emitter<AuthState> emit) {}
+  final formKey = GlobalKey<FormState>();
+
+  void _onAuthInitialEvent(AuthInitialEvent event, Emitter<AuthState> emit) {
+    emit(state.copyWith(formKey: formKey));
+  }
 
   void _onAuthFormReset(AuthFormReset event, Emitter<AuthState> emit) {}
 
   void _onAuthSaveUserSession(
     AuthSaveUserSession event,
     Emitter<AuthState> emit,
-  ) {}
+  ) async {
+    var response = state.response as Success<TokenResponse>;
+
+    await authUseCases.saveUserSession.run(
+      state.account.value,
+      state.phone.value,
+      response.data.token,
+    );
+  }
 
   void _onAccountChanged(AccountChanged event, Emitter<AuthState> emit) {
     emit(
@@ -30,6 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           value: event.account.value,
           error: event.account.value.isNotEmpty ? null : 'Ingrese su cuenta',
         ),
+        formKey: formKey,
       ),
     );
   }
@@ -41,18 +55,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           value: event.phone.value,
           error: event.phone.value.isNotEmpty ? null : 'Ingrese su teléfono',
         ),
+        formKey: formKey,
       ),
     );
   }
 
   void _onAuthSubmitted(AuthSubmitted event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(response: Loading()));
+    emit(state.copyWith(response: Loading(), formKey: formKey));
 
     print(
       'Submitting login with account: ${state.account.value} and phone: ${state.phone.value}',
     );
 
-    await Future.delayed(const Duration(seconds: 2));
-    emit(state.copyWith(response: Error('Error al iniciar sesión')));
+    Resource<TokenResponse> response = await authUseCases.getToken.run(
+      state.account.value,
+      state.phone.value,
+    );
+    emit(state.copyWith(response: response, formKey: formKey));
   }
 }
