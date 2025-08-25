@@ -1,0 +1,10 @@
+name: Build Frontend
+
+on:
+  workflow_call:
+
+jobs:
+  testAndCoverage:
+    name: 🧪 Test
+    uses: ./.github/workflows/_test_front_with_coverage.yml
+    secrets: inherit

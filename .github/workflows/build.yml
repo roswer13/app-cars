@@ -1,0 +1,15 @@
+name: 🔨🧪 Build & Test
+
+permissions: write-all
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+on: [push]
+
+jobs:
+  testAndCoverage:
+    name: Build & Test App
+    uses: ./.github/workflows/_build_front.yml
+    secrets: inherit

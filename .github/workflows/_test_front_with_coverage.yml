@@ -24,9 +24,11 @@ jobs:
           cache: true
 
       - name: ⚙️ Flutter pub get
+        working-directory: app_cars_front
         run: flutter pub get
 
       - name: 🧪 Run tests with coverage
+        working-directory: app_cars_front
         run: |
           flutter test --coverage
           lcov --remove coverage/lcov.info '*/.pub-cache/*' '*/test/*' '/usr/*' '*/build/*' -o coverage/filtered_lcov.info
