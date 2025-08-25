@@ -10,6 +10,6 @@ on: [push]
 
 jobs:
   testAndCoverage:
-    name: Build & Test App
+    name: 📱 Build & Test App
     uses: ./.github/workflows/_build_front.yml
     secrets: inherit

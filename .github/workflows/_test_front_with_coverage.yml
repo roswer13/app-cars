@@ -31,5 +31,5 @@ jobs:
         working-directory: app_cars_front
         run: |
           flutter test --coverage
-          lcov --remove coverage/lcov.info '*/.pub-cache/*' '*/test/*' '/usr/*' '*/build/*' -o coverage/filtered_lcov.info
-          lcov --list coverage/filtered_lcov.info
+          lcov --ignore-errors unused --remove coverage/lcov.info '*/.pub-cache/*' '*/test/*' '/usr/*' '*/build/*' -o coverage/filtered_lcov.info
+          lcov --ignore-errors unused --list coverage/filtered_lcov.info
