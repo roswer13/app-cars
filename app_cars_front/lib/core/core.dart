@@ -6,3 +6,4 @@ export 'router.dart';
 export 'secure/secure.dart';
 export 'util/util.dart';
 export 'components/components.dart';
+export 'bloc_providers.dart';

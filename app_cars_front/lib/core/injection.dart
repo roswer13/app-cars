@@ -31,8 +31,10 @@ Future<void> configureDependencies(Env envConfig) async {
   );
 
   // Use Cases
-  locator.registerLazySingleton<LoginUseCase>(() => LoginUseCase(locator()));
-  locator.registerLazySingleton<GetTokenUseCase>(
-    () => GetTokenUseCase(locator()),
+  locator.registerLazySingleton<AuthUseCases>(
+    () => AuthUseCases(
+      login: LoginUseCase(locator()),
+      getToken: GetTokenUseCase(locator()),
+    ),
   );
 }
