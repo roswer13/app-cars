@@ -9,7 +9,12 @@ concurrency:
 on: [push]
 
 jobs:
-  testAndCoverage:
+  testAndCoverageFront:
     name: 📱 Build & Test App
     uses: ./.github/workflows/_build_front.yml
+    secrets: inherit
+
+  testAndCoverageBack:
+    name: 👽️ Test & Coverage
+    uses: ./.github/workflows/_build_back.yml
     secrets: inherit
