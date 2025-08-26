@@ -21,7 +21,7 @@ class CarsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: blocProviders,
+      providers: blocProviders(),
       child: MaterialApp.router(
         title: 'Cars App',
         theme: ThemeData(

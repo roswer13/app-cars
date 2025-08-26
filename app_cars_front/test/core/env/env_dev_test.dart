@@ -13,8 +13,10 @@ void main() {
       expect(envDev.env, equals(BaseConstants.dev));
     });
 
-    test('baseUrl throws UnimplementedError', () {
-      expect(() => envDev.baseUrl, throwsA(isA<UnimplementedError>()));
+    test('baseUrl is not null or empty and string type', () {
+      expect(envDev.baseUrl, isNotNull);
+      expect(envDev.baseUrl, isNotEmpty);
+      expect(envDev.baseUrl, isA<String>());
     });
   });
 }
