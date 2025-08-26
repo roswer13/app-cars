@@ -35,30 +35,41 @@ class VehicleRepositoryImpl implements VehicleRepository {
         return Error('No token found');
       }
 
-      final Resource<VehicleResponse> response = await _vehicleService.get(
-        null,
-        token,
-      );
+      List<VehicleResult> all = [];
+      String? nextUrl = '/vehicule/';
 
-      if (response is Success<VehicleResponse>) {
-        print('Vehicles: ${response.data.results.length}');
-        // Cache the vehicles in the local database
-        await dao.clearVehicles();
-        final companions = response.data.results.map((v) {
-          return VehiclesCompanion.insert(
-            id: Value(v.id),
-            plate: v.plate,
-            label: v.label,
-            statusColor: v.statusColor,
-            latitude: v.latitude,
-            longitude: v.longitude,
-          );
-        }).toList();
-        await dao.insertVehicles(companions);
+      while (nextUrl != null) {
+        final response = await _vehicleService.get(nextUrl, token);
+
+        if (response is Success<VehicleResponse>) {
+          final data = response.data;
+          all.addAll(data.results);
+
+          nextUrl = data.next;
+        } else if (response is Error) {
+          print('Error fetching vehicles: ${response.toString()}');
+          nextUrl = null; // Stop fetching if there's an error
+        }
       }
+
+      print('Vehicles: ${all.length}');
+      // Cache the vehicles in the local database
+      await dao.clearVehicles();
+      final companions = all.map((v) {
+        return VehiclesCompanion.insert(
+          id: Value(v.id),
+          plate: v.plate,
+          label: v.label,
+          statusColor: v.statusColor,
+          latitude: v.latitude,
+          longitude: v.longitude,
+        );
+      }).toList();
+      await dao.insertVehicles(companions);
     }
 
     dbVehicles = await dao.getAllVehicles();
+
     final vehicleResults = dbVehicles
         .map(
           (e) => VehicleResult(
@@ -71,7 +82,7 @@ class VehicleRepositoryImpl implements VehicleRepository {
           ),
         )
         .toList();
-    print('Vehicles: ${vehicleResults.length}');
+
     return Success(vehicleResults);
   }
 }

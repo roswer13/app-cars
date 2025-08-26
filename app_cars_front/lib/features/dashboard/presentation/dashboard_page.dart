@@ -29,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Supervisor de Flota - Livetrack")),
+      appBar: AppBar(title: const Text(BaseConstants.appName)),
       body: Container(
         padding: const EdgeInsets.all(16.0),
         child: BlocListener<AuthBloc, AuthState>(

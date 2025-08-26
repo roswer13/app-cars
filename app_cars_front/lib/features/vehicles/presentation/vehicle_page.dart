@@ -26,7 +26,8 @@ class _VehiclePageState extends State<VehiclePage> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - 200) {
-        vehicleBloc?.add(VehicleLoadedEvent());
+        // Option for loading more vehicles with pagination.
+        // vehicleBloc?.add(VehicleLoadedEvent());
       }
     });
   }
@@ -37,10 +38,14 @@ class _VehiclePageState extends State<VehiclePage> {
     super.dispose();
   }
 
+  Future<void> _refreshData() async {
+    vehicleBloc?.add(VehicleRefreshEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Vehicle Page ")),
+      appBar: AppBar(title: const Text(BaseConstants.appName)),
       body: Container(
         margin: const EdgeInsets.all(16.0),
         child: BlocBuilder<VehicleBloc, VehicleState>(
@@ -60,22 +65,25 @@ class _VehiclePageState extends State<VehiclePage> {
             return Column(
               children: [
                 Expanded(
-                  child: ListView.separated(
-                    controller: _scrollController,
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      if (index < items.length) {
-                        return VehicleItem(item: items[index]);
-                      } else {
-                        return const Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
-                    },
-                    separatorBuilder: (context, index) {
-                      return const Divider(thickness: 1, color: Colors.grey);
-                    },
+                  child: RefreshIndicator(
+                    onRefresh: _refreshData,
+                    child: ListView.separated(
+                      controller: _scrollController,
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        if (index < items.length) {
+                          return VehicleItem(item: items[index]);
+                        } else {
+                          return const Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Center(child: CircularProgressIndicator()),
+                          );
+                        }
+                      },
+                      separatorBuilder: (context, index) {
+                        return const Divider(thickness: 1, color: Colors.grey);
+                      },
+                    ),
                   ),
                 ),
                 ButtonBase(

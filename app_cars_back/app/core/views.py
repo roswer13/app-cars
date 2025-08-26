@@ -13,12 +13,12 @@ class SeedView(APIView):
 
         # Create user admin if not exists.
         if not User.objects.filter(account='admin').exists():
-            User.objects.create_superuser(account='admin', password='123456')
+            User.objects.create_superuser(account='admin', password='root1234')
 
         # Create demo user if not exists.
         if not User.objects.filter(account='supervisor').exists():
             User.objects.create_user(
-                account='supervisor', phone='123456789', password='123456'
+                account='supervisor', phone='123456789', password='root1234'
             )
 
         # Reset models.

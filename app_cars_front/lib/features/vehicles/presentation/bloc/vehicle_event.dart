@@ -17,3 +17,10 @@ class VehicleLoadedEvent extends VehicleEvent {
   @override
   List<Object?> get props => [vehicles, nextPageUrl];
 }
+
+class VehicleRefreshEvent extends VehicleEvent {
+  const VehicleRefreshEvent();
+
+  @override
+  List<Object?> get props => [];
+}

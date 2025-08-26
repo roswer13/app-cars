@@ -10,6 +10,7 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
 
   VehicleBloc(this.vehicleUseCases) : super(const VehicleState()) {
     on<VehicleLoadedEvent>(_onVehicleLoadedEvent);
+    on<VehicleRefreshEvent>(_onVehicleRefreshEvent);
   }
 
   void _onVehicleLoadedEvent(
@@ -31,7 +32,7 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
     // Resource<VehicleResponse> result = await vehicleUseCases.getVehicles.run(url);
 
     Resource<List<VehicleResult>> result = await vehicleUseCases.getVehicles
-        .run(null);
+        .run(false);
 
     /*
     if (result is Success<VehicleResponse>) {
@@ -49,6 +50,44 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
       emit(
         state.copyWith(
           vehicles: [...state.vehicles ?? [], ...result.data],
+          response: Success(result.data),
+          hasReachedEnd: false,
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          response: Error('Error'),
+          vehicles: state.vehicles,
+          nextUrl: state.nextUrl,
+          hasReachedEnd: state.hasReachedEnd,
+        ),
+      );
+    }
+  }
+
+  void _onVehicleRefreshEvent(
+    VehicleRefreshEvent event,
+    Emitter<VehicleState> emit,
+  ) async {
+    if (state.response is Loading) return;
+
+    emit(
+      state.copyWith(
+        response: Loading(),
+        vehicles: state.vehicles,
+        nextUrl: state.nextUrl,
+        hasReachedEnd: state.hasReachedEnd,
+      ),
+    );
+
+    Resource<List<VehicleResult>> result = await vehicleUseCases.getVehicles
+        .run(true);
+
+    if (result is Success<List<VehicleResult>>) {
+      emit(
+        state.copyWith(
+          vehicles: result.data,
           response: Success(result.data),
           hasReachedEnd: false,
         ),
