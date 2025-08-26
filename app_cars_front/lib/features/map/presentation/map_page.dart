@@ -16,9 +16,8 @@ class MapPage extends StatelessWidget {
       body: Center(
         child: BlocBuilder<MapBloc, MapState>(
           builder: (context, state) {
-            print(state.toString());
             if (state.isAllGranted) {
-              return const Text("Acceso al GPS concedido");
+              return MapContent();
             }
 
             return !state.isGpsEnabled
