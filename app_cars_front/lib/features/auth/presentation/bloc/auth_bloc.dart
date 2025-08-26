@@ -13,6 +13,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AccountChanged>(_onAccountChanged);
     on<PhoneChanged>(_onPhoneChanged);
     on<AuthSubmitted>(_onAuthSubmitted);
+    on<AuthLogout>(_onAuthLogout);
   }
 
   final formKey = GlobalKey<FormState>();
@@ -21,7 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthInitialEvent event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(response: Loading(), formKey: formKey));
+    emit(state.copyWith(response: LoadingPage(), formKey: formKey));
     Resource<AuthResponse> response = await authUseCases.login.run();
     emit(state.copyWith(response: response, formKey: formKey));
   }
@@ -35,6 +36,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     var response = state.response as Success<TokenResponse>;
+
+    print('Account: ${state.account.value}');
+    print('Phone: ${state.phone.value}');
+    print('Token: ${response.data.token}');
 
     await authUseCases.saveUserSession.run(
       state.account.value,
@@ -79,5 +84,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       state.phone.value,
     );
     emit(state.copyWith(response: response, formKey: formKey));
+  }
+
+  void _onAuthLogout(AuthLogout event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(response: Loading(), formKey: formKey));
+
+    await authUseCases.logout.run();
+    emit(state.copyWith(response: Success(null), formKey: formKey));
   }
 }

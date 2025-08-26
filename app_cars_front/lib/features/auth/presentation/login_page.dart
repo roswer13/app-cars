@@ -29,24 +29,29 @@ class _LoginPageState extends State<LoginPage> {
           listener: (context, state) {
             final responseState = state.response;
 
-            print('AuthState changed: $responseState');
+            print('Response State: $responseState');
             if (responseState is Success<TokenResponse>) {
               // If login is successful, save the user session
+              print('Saving user session...');
               authBloc?.add(AuthSaveUserSession(response: responseState.data));
-            }
-            if (responseState is Success<AuthResponse>) {
+              context.go('/${DashboardPage.routeName}');
+            } else if (responseState is Success<AuthResponse>) {
               // Navigate to dashboard
               context.go('/${DashboardPage.routeName}');
-            } else if (responseState is Error) {
+            } else if (responseState is Error<TokenResponse>) {
               // Show an error message if login fails
               Fluttertoast.showToast(
-                msg: 'Error en inicio de sesión',
+                msg: responseState.message,
                 toastLength: Toast.LENGTH_LONG,
               );
             }
           },
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
+              if (state.response is LoadingPage) {
+                return Center(child: CircularProgressIndicator());
+              }
+
               return Form(
                 key: state.formKey,
                 child: Center(

@@ -10,6 +10,9 @@ class Initial extends Resource {}
 /// Indicates that a loading operation is in progress.
 class Loading extends Resource {}
 
+/// Indicates that a loading operation is in progress and requires a full-screen overlay.
+class LoadingPage extends Resource {}
+
 /// Represents a successful state containing the resulting data.
 ///
 /// [T] is the type of the data returned.

@@ -50,3 +50,7 @@ class PhoneChanged extends AuthEvent {
 class AuthSubmitted extends AuthEvent {
   const AuthSubmitted();
 }
+
+class AuthLogout extends AuthEvent {
+  const AuthLogout();
+}

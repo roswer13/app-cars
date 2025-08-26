@@ -37,6 +37,7 @@ Future<void> configureDependencies(Env envConfig) async {
       login: LoginUseCase(locator()),
       getToken: GetTokenUseCase(locator()),
       saveUserSession: SaveUserUsecase(locator()),
+      logout: LogoutUseCase(locator()),
     ),
   );
 }
