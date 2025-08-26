@@ -1,7 +1,6 @@
-import 'package:app_cars_front/features/auth/presentation/login_page.dart';
-import 'package:app_cars_front/features/dashboard/presentation/dashboard_page.dart';
-import 'package:app_cars_front/features/vehicles/presentation/vehicle_page.dart';
 import 'package:go_router/go_router.dart';
+
+import 'package:app_cars_front/features/features.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/${LoginPage.routeName}',
@@ -20,6 +19,11 @@ final appRouter = GoRouter(
       name: VehiclePage.routeName,
       path: '/${VehiclePage.routeName}',
       builder: (context, state) => const VehiclePage(),
+    ),
+    GoRoute(
+      name: MapPage.routeName,
+      path: '/${MapPage.routeName}',
+      builder: (context, state) => const MapPage(),
     ),
   ],
 );

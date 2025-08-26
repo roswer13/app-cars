@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:app_cars_front/features/features.dart';
+import 'package:go_router/go_router.dart';
 
 class VehiclePage extends StatefulWidget {
   static const String routeName = 'vehicle';
@@ -56,22 +57,35 @@ class _VehiclePageState extends State<VehiclePage> {
 
             final items = state.vehicles ?? [];
 
-            return ListView.separated(
-              controller: _scrollController,
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                if (index < items.length) {
-                  return VehicleItem(item: items[index]);
-                } else {
-                  return const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
-              },
-              separatorBuilder: (context, index) {
-                return const Divider(thickness: 1, color: Colors.grey);
-              },
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    controller: _scrollController,
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      if (index < items.length) {
+                        return VehicleItem(item: items[index]);
+                      } else {
+                        return const Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+                    },
+                    separatorBuilder: (context, index) {
+                      return const Divider(thickness: 1, color: Colors.grey);
+                    },
+                  ),
+                ),
+                ButtonBase(
+                  onPressed: () {
+                    context.push('/${MapPage.routeName}');
+                  },
+                  text: 'Ver a todos en el mapa',
+                  width: double.infinity,
+                ),
+              ],
             );
           },
         ),
