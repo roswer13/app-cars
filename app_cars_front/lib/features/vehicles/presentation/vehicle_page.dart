@@ -14,19 +14,38 @@ class VehiclePage extends StatefulWidget {
 }
 
 class _VehiclePageState extends State<VehiclePage> {
+  final ScrollController _scrollController = ScrollController();
   VehicleBloc? vehicleBloc;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     vehicleBloc = BlocProvider.of<VehicleBloc>(context);
 
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) {
+        vehicleBloc?.add(VehicleLoadedEvent());
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Vehicle Page")),
+      appBar: AppBar(title: const Text("Vehicle Page ")),
       body: Container(
         margin: const EdgeInsets.all(16.0),
         child: BlocBuilder<VehicleBloc, VehicleState>(
           builder: (context, state) {
-            if (state.response is Loading) {
+            if (state.response is Loading &&
+                _scrollController.positions.isEmpty) {
               return Center(child: CircularProgressIndicator());
             } else if (state.response is Error) {
               final error = state.response as Error;
@@ -35,13 +54,20 @@ class _VehiclePageState extends State<VehiclePage> {
               return Center(child: Text('No data available'));
             }
 
-            final response = state.response as Success<VehicleResponse>;
-            final items = response.data.results;
+            final items = state.vehicles ?? [];
 
             return ListView.separated(
+              controller: _scrollController,
               itemCount: items.length,
               itemBuilder: (context, index) {
-                return VehicleItem(item: items[index]);
+                if (index < items.length) {
+                  return VehicleItem(item: items[index]);
+                } else {
+                  return const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
               },
               separatorBuilder: (context, index) {
                 return const Divider(thickness: 1, color: Colors.grey);

@@ -2,7 +2,7 @@ import 'package:app_cars_front/features/features.dart';
 import 'package:flutter/material.dart';
 
 class VehicleItem extends StatelessWidget {
-  final Result item;
+  final Vehicle item;
 
   const VehicleItem({super.key, required this.item});
 

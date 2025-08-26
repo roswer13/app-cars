@@ -5,7 +5,7 @@ class GetVehiclesUseCase {
 
   GetVehiclesUseCase(this.repository);
 
-  run() async {
-    return await repository.get();
+  run(String? url) async {
+    return await repository.get(url);
   }
 }

@@ -6,23 +6,38 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
   final VehicleUseCases vehicleUseCases;
 
   VehicleBloc(this.vehicleUseCases) : super(const VehicleState()) {
-    on<VehicleInitialEvent>(_onVehicleInitialEvent);
     on<VehicleLoadedEvent>(_onVehicleLoadedEvent);
   }
-
-  void _onVehicleInitialEvent(
-    VehicleInitialEvent event,
-    Emitter<VehicleState> emit,
-  ) {}
 
   void _onVehicleLoadedEvent(
     VehicleLoadedEvent event,
     Emitter<VehicleState> emit,
   ) async {
-    emit(state.copyWith(response: Loading()));
+    if (state.hasReachedEnd || state.response is Loading) return;
 
-    Resource<VehicleResponse> result = await vehicleUseCases.getVehicles.run();
+    emit(
+      state.copyWith(
+        response: Loading(),
+        vehicles: state.vehicles,
+        nextUrl: state.nextUrl,
+        hasReachedEnd: state.hasReachedEnd,
+      ),
+    );
 
-    emit(state.copyWith(response: result));
+    String? url = state.nextUrl;
+    Resource<VehicleResponse> result = await vehicleUseCases.getVehicles.run(
+      url,
+    );
+
+    if (result is Success<VehicleResponse>) {
+      emit(
+        state.copyWith(
+          vehicles: [...state.vehicles ?? [], ...result.data.results],
+          response: Success(result.data.results),
+          nextUrl: result.data.next,
+          hasReachedEnd: result.data.next == null,
+        ),
+      );
+    }
   }
 }

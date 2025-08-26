@@ -1,3 +1,4 @@
+import 'package:app_cars_front/features/features.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class VehicleEvent extends Equatable {
@@ -7,16 +8,12 @@ abstract class VehicleEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class VehicleInitialEvent extends VehicleEvent {
-  const VehicleInitialEvent();
-
-  @override
-  List<Object?> get props => [];
-}
-
 class VehicleLoadedEvent extends VehicleEvent {
-  const VehicleLoadedEvent();
+  final List<Vehicle>? vehicles;
+  final String? nextPageUrl;
+
+  const VehicleLoadedEvent({this.vehicles, this.nextPageUrl});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [vehicles, nextPageUrl];
 }

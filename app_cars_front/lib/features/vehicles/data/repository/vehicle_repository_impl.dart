@@ -10,12 +10,12 @@ class VehicleRepositoryImpl implements VehicleRepository {
   VehicleRepositoryImpl(this._vehicleService);
 
   @override
-  Future<Resource<VehicleResponse>> get() async {
+  Future<Resource<VehicleResponse>> get(String? url) async {
     var token = await _secureStorage.read(SecureStorageConstants.token);
     if (token == null) {
       return Error('No token found');
     }
 
-    return await _vehicleService.get(token, 0);
+    return await _vehicleService.get(url, token, 0);
   }
 }
