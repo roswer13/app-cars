@@ -51,6 +51,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   onTap: () {
                     switch (item.id) {
                       case 1:
+                        context.push('/${VehiclePage.routeName}');
                         break;
                       case 2:
                         break;

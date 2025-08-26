@@ -44,7 +44,6 @@ class Result {
   String statusColor;
   String latitude;
   String longitude;
-  DateTime lastUpdate;
 
   Result({
     required this.id,
@@ -53,7 +52,6 @@ class Result {
     required this.statusColor,
     required this.latitude,
     required this.longitude,
-    required this.lastUpdate,
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
@@ -63,7 +61,6 @@ class Result {
     statusColor: json["status_color"],
     latitude: json["latitude"],
     longitude: json["longitude"],
-    lastUpdate: DateTime.parse(json["last_update"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -73,6 +70,5 @@ class Result {
     "status_color": statusColor,
     "latitude": latitude,
     "longitude": longitude,
-    "last_update": lastUpdate.toIso8601String(),
   };
 }

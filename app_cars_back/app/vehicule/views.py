@@ -1,5 +1,4 @@
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics, authentication, permissions
 from rest_framework.pagination import PageNumberPagination
 
 from core.models import Vehicule
@@ -11,5 +10,6 @@ class VehiclePagination(PageNumberPagination):
 class VehicleListView(generics.ListAPIView):
     queryset = Vehicule.objects.all().order_by('id')
     serializer_class = VehicleSerializer
-    permission_classes = [IsAuthenticated]
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
     pagination_class = VehiclePagination

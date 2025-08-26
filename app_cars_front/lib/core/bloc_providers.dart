@@ -10,4 +10,10 @@ List<BlocProvider> blocProviders() => [
     create: (context) =>
         AuthBloc(locator<AuthUseCases>())..add(AuthInitialEvent()),
   ),
+
+  // VehicleBloc provider
+  BlocProvider<VehicleBloc>(
+    create: (context) =>
+        VehicleBloc(locator<VehicleUseCases>())..add(VehicleLoadedEvent()),
+  ),
 ];
