@@ -1,5 +1,5 @@
-import 'package:app_cars_front/features/features.dart';
 import 'package:equatable/equatable.dart';
+import 'package:app_cars_front/features/vehicles/domain/models/vehicle_response.dart';
 
 abstract class VehicleEvent extends Equatable {
   const VehicleEvent();
@@ -9,7 +9,7 @@ abstract class VehicleEvent extends Equatable {
 }
 
 class VehicleLoadedEvent extends VehicleEvent {
-  final List<Vehicle>? vehicles;
+  final List<VehicleResult>? vehicles;
   final String? nextPageUrl;
 
   const VehicleLoadedEvent({this.vehicles, this.nextPageUrl});

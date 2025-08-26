@@ -1,10 +1,10 @@
-import 'package:app_cars_front/features/features.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:app_cars_front/core/core.dart';
+import 'package:app_cars_front/features/vehicles/domain/models/vehicle_response.dart';
 
 class VehicleState extends Equatable {
-  final List<Vehicle>? vehicles;
+  final List<VehicleResult>? vehicles;
   final Resource? response;
   final String? nextUrl;
   final bool hasReachedEnd;
@@ -17,7 +17,7 @@ class VehicleState extends Equatable {
   });
 
   VehicleState copyWith({
-    List<Vehicle>? vehicles,
+    List<VehicleResult>? vehicles,
     Resource? response,
     String? nextUrl,
     bool? hasReachedEnd,

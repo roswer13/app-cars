@@ -1,4 +1,4 @@
-import 'package:app_cars_front/features/features.dart';
+import 'package:app_cars_front/features/vehicles/domain/repository/vehicle_repository.dart';
 
 class GetVehiclesUseCase {
   VehicleRepository repository;
@@ -6,6 +6,6 @@ class GetVehiclesUseCase {
   GetVehiclesUseCase(this.repository);
 
   run(String? url) async {
-    return await repository.get(url);
+    return await repository.getAll(false);
   }
 }

@@ -1,8 +1,9 @@
-import 'package:app_cars_front/features/features.dart';
 import 'package:flutter/material.dart';
 
+import 'package:app_cars_front/features/vehicles/domain/models/vehicle_response.dart';
+
 class VehicleItem extends StatelessWidget {
-  final Vehicle item;
+  final VehicleResult item;
 
   const VehicleItem({super.key, required this.item});
 

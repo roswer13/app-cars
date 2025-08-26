@@ -1,5 +1,5 @@
 import 'package:app_cars_front/core/core.dart';
-import 'package:app_cars_front/features/features.dart';
+import 'package:app_cars_front/features/vehicles/domain/models/vehicle_response.dart';
 import 'package:dio/dio.dart';
 
 class VehicleService {
@@ -7,11 +7,7 @@ class VehicleService {
 
   VehicleService(this._dio);
 
-  Future<Resource<VehicleResponse>> get(
-    String? url,
-    String token,
-    int page,
-  ) async {
+  Future<Resource<VehicleResponse>> get(String? url, String token) async {
     try {
       final response = await _dio.get(
         url ?? '/vehicule/',

@@ -10,7 +10,7 @@ class VehicleResponse {
   int count;
   String? next;
   String? previous;
-  List<Vehicle> results;
+  List<VehicleResult> results;
 
   VehicleResponse({
     required this.count,
@@ -24,8 +24,8 @@ class VehicleResponse {
         count: json["count"],
         next: json["next"],
         previous: json["previous"],
-        results: List<Vehicle>.from(
-          json["results"].map((x) => Vehicle.fromJson(x)),
+        results: List<VehicleResult>.from(
+          json["results"].map((x) => VehicleResult.fromJson(x)),
         ),
       );
 
@@ -37,7 +37,7 @@ class VehicleResponse {
   };
 }
 
-class Vehicle {
+class VehicleResult {
   int id;
   String plate;
   String label;
@@ -45,7 +45,7 @@ class Vehicle {
   String latitude;
   String longitude;
 
-  Vehicle({
+  VehicleResult({
     required this.id,
     required this.plate,
     required this.label,
@@ -54,7 +54,7 @@ class Vehicle {
     required this.longitude,
   });
 
-  factory Vehicle.fromJson(Map<String, dynamic> json) => Vehicle(
+  factory VehicleResult.fromJson(Map<String, dynamic> json) => VehicleResult(
     id: json["id"],
     plate: json["plate"],
     label: json["label"],
