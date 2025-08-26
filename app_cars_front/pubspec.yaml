@@ -38,11 +38,13 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_secure_storage: ^9.2.4
   fluttertoast: ^8.2.12
+  geolocator: ^14.0.2
   get_it: ^8.2.0
   go_router: ^16.2.0
   http: ^1.5.0
   injectable: ^2.5.1
   path_provider: ^2.1.5
+  permission_handler: ^12.0.1
   sqlite3_flutter_libs: ^0.5.39
 
 dev_dependencies:

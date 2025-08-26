@@ -17,4 +17,7 @@ List<BlocProvider> blocProviders() => [
     create: (context) =>
         VehicleBloc(locator<VehicleUseCases>())..add(VehicleLoadedEvent()),
   ),
+
+  // MapBloc provider
+  BlocProvider<MapBloc>(create: (context) => MapBloc()),
 ];

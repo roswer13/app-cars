@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.app_cars_front"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
