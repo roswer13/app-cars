@@ -2,6 +2,13 @@
 
 This is a Flutter application for managing car listings and user authentication.
 
+## Pre-requisites
+
+- Flutter SDK
+- Dart SDK
+- An IDE (e.g., Android Studio, Visual Studio Code)
+- Add your google maps API key to the project, in the `android/app/src/main/strings.xml` file and `ios/Runner/AppDelegate.swift` file.
+
 ## Run project
 
 The project use flavors for different environments.
