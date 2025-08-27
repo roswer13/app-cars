@@ -21,7 +21,7 @@ void main() {
     );
     await tester.pumpWidget(makeTestableWidget(VehicleItem(item: vehicle)));
 
-    expect(find.text('Test'), findsOneWidget);
+    expect(find.text('AAA123 - Test'), findsOneWidget);
 
     final circle = tester.widget<Container>(
       find

@@ -1,5 +1,4 @@
 import 'package:app_cars_front/core/core.dart';
-import 'package:app_cars_front/core/util/debouncer.dart';
 import 'package:app_cars_front/features/vehicles/domain/models/vehicle_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
