@@ -21,3 +21,10 @@ class VehicleRefreshEvent extends VehicleEvent {
   @override
   List<Object?> get props => [];
 }
+
+class VehicleDeleteAllEvent extends VehicleEvent {
+  const VehicleDeleteAllEvent();
+
+  @override
+  List<Object?> get props => [];
+}

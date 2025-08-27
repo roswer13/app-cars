@@ -5,4 +5,6 @@ abstract class VehicleRepository {
   Future<Resource<VehicleResponse>> get(String? url);
 
   Future<Resource<List<VehicleResult>>> getAll(bool refresh);
+
+  Future<Resource<void>> deleteAll();
 }

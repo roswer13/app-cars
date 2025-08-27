@@ -86,6 +86,7 @@ class _AuthPageState extends State<AuthPage> {
                           prefixIcon: Icons.phone,
                         ),
                         textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.phone,
                         onChanged: (text) {
                           authBloc?.add(
                             PhoneChanged(phone: BlocFormItem(value: text)),

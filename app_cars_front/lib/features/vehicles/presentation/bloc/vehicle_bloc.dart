@@ -11,6 +11,7 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
   VehicleBloc(this.vehicleUseCases) : super(const VehicleState()) {
     on<VehicleLoadedEvent>(_onVehicleLoadedEvent);
     on<VehicleRefreshEvent>(_onVehicleRefreshEvent);
+    on<VehicleDeleteAllEvent>(_onVehicleDeleteAllEvent);
   }
 
   void _onVehicleLoadedEvent(
@@ -102,5 +103,15 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
         ),
       );
     }
+  }
+
+  void _onVehicleDeleteAllEvent(
+    VehicleDeleteAllEvent event,
+    Emitter<VehicleState> emit,
+  ) async {
+    emit(state.copyWith(response: Loading()));
+    await vehicleUseCases.deleteAllVehicles.run();
+    print('All vehicles deleted');
+    emit(state.copyWith(response: Success(null)));
   }
 }

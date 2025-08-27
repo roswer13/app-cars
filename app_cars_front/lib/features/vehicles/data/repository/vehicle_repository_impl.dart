@@ -85,4 +85,11 @@ class VehicleRepositoryImpl implements VehicleRepository {
 
     return Success(vehicleResults);
   }
+
+  @override
+  Future<Resource<void>> deleteAll() async {
+    print('Deleting all vehicles from local database');
+    await dao.clearVehicles();
+    return Success(null);
+  }
 }

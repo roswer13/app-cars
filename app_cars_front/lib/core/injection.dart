@@ -6,6 +6,7 @@ import 'package:app_cars_front/features/vehicles/data/datasource/data/models/veh
 import 'package:app_cars_front/features/vehicles/data/datasource/remote/vehicle_service.dart';
 import 'package:app_cars_front/features/vehicles/data/repository/vehicle_repository_impl.dart';
 import 'package:app_cars_front/features/vehicles/domain/repository/vehicle_repository.dart';
+import 'package:app_cars_front/features/vehicles/domain/usecases/delete_all_vehicle.dart';
 import 'package:app_cars_front/features/vehicles/domain/usecases/get_vehicles.dart';
 import 'package:app_cars_front/features/vehicles/domain/usecases/vehicle_usecases.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -79,6 +80,9 @@ Future<void> configureDependencies(Env envConfig) async {
   );
 
   locator.registerLazySingleton<VehicleUseCases>(
-    () => VehicleUseCases(getVehicles: GetVehiclesUseCase(locator())),
+    () => VehicleUseCases(
+      getVehicles: GetVehiclesUseCase(locator()),
+      deleteAllVehicles: DeleteAllVehiclesUseCase(locator()),
+    ),
   );
 }

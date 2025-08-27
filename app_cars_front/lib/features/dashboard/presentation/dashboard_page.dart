@@ -17,10 +17,12 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   AuthBloc? authBloc;
+  VehicleBloc? vehicleBloc;
 
   @override
   Widget build(BuildContext context) {
     authBloc = BlocProvider.of<AuthBloc>(context);
+    vehicleBloc = BlocProvider.of<VehicleBloc>(context);
 
     final List<DashboardItem> items = [
       DashboardItem(id: 1, title: "Supervisor", icon: Icons.supervisor_account),
@@ -68,6 +70,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         break;
                       case 4:
                         authBloc?.add(AuthLogout());
+                        vehicleBloc?.add(VehicleDeleteAllEvent());
                         break;
                       default:
                         break;
