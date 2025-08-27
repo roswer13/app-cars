@@ -6,16 +6,16 @@ import 'package:go_router/go_router.dart';
 import 'package:app_cars_front/core/core.dart';
 import 'package:app_cars_front/features/features.dart';
 
-class LoginPage extends StatefulWidget {
+class AuthPage extends StatefulWidget {
   static const String routeName = 'login';
 
-  const LoginPage({super.key});
+  const AuthPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<AuthPage> createState() => _AuthPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _AuthPageState extends State<AuthPage> {
   AuthBloc? authBloc;
 
   @override
@@ -31,15 +31,15 @@ class _LoginPageState extends State<LoginPage> {
 
             print('Response State: $responseState');
             if (responseState is Success<TokenResponse>) {
-              // If login is successful, save the user session
+              /// If login is successful, save the user session
               print('Saving user session...');
               authBloc?.add(AuthSaveUserSession(response: responseState.data));
               context.go('/${DashboardPage.routeName}');
             } else if (responseState is Success<AuthResponse>) {
-              // Navigate to dashboard
+              /// Navigate to dashboard
               context.go('/${DashboardPage.routeName}');
             } else if (responseState is Error<TokenResponse>) {
-              // Show an error message if login fails
+              /// Show an error message if login fails
               Fluttertoast.showToast(
                 msg: responseState.message,
                 toastLength: Toast.LENGTH_LONG,
@@ -48,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
           },
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
+              /// Loading page.
               if (state.response is LoadingPage) {
                 return Center(child: CircularProgressIndicator());
               }
@@ -59,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Header(),
+
                       TextFormField(
                         decoration: InputDecorations.decoration(
                           labelText: 'Nombre de cuenta',
@@ -76,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                       const SizedBox(height: 16),
+
                       TextFormField(
                         decoration: InputDecorations.decoration(
                           labelText: 'Telefono',

@@ -88,7 +88,7 @@ class _VehiclePageState extends State<VehiclePage> {
                 ),
                 ButtonBase(
                   onPressed: () {
-                    context.push('/${MapPage.routeName}');
+                    context.push('/${MapPage.routeName}', extra: items);
                   },
                   text: 'Ver a todos en el mapa',
                   width: double.infinity,

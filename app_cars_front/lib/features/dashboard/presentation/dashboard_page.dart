@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:app_cars_front/core/core.dart';
@@ -37,7 +38,7 @@ class _DashboardPageState extends State<DashboardPage> {
             final responseState = state.response;
             print('Response State: $responseState');
             if (responseState is Success) {
-              context.go('/${LoginPage.routeName}');
+              context.go('/${AuthPage.routeName}');
             }
           },
           child: Center(
@@ -54,8 +55,16 @@ class _DashboardPageState extends State<DashboardPage> {
                         context.push('/${VehiclePage.routeName}');
                         break;
                       case 2:
+                        Fluttertoast.showToast(
+                          msg: "Notificaciones",
+                          toastLength: Toast.LENGTH_SHORT,
+                        );
                         break;
                       case 3:
+                        Fluttertoast.showToast(
+                          msg: "Lugares",
+                          toastLength: Toast.LENGTH_SHORT,
+                        );
                         break;
                       case 4:
                         authBloc?.add(AuthLogout());

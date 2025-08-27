@@ -21,7 +21,13 @@ final locator = GetIt.instance;
 Future<void> configureDependencies(Env envConfig) async {
   // Dio
   locator.registerLazySingleton<Dio>(
-    () => Dio(BaseOptions(baseUrl: envConfig.baseUrl)),
+    () => Dio(
+      BaseOptions(
+        baseUrl: envConfig.baseUrl,
+        connectTimeout: Duration(seconds: 5),
+        receiveTimeout: Duration(seconds: 3),
+      ),
+    ),
   );
 
   // Data base

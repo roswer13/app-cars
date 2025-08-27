@@ -1,3 +1,4 @@
+import 'package:app_cars_front/features/vehicles/domain/models/vehicle_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,7 +8,9 @@ import 'package:app_cars_front/features/features.dart';
 class MapPage extends StatelessWidget {
   static const String routeName = 'map';
 
-  const MapPage({super.key});
+  final List<VehicleResult> vehicles;
+
+  const MapPage({super.key, required this.vehicles});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class MapPage extends StatelessWidget {
         child: BlocBuilder<MapBloc, MapState>(
           builder: (context, state) {
             if (state.isAllGranted) {
-              return MapContent();
+              return MapContent(vehicles: vehicles);
             }
 
             return !state.isGpsEnabled

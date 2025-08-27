@@ -1,14 +1,15 @@
+import 'package:app_cars_front/features/vehicles/domain/models/vehicle_response.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:app_cars_front/features/features.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/${LoginPage.routeName}',
+  initialLocation: '/${AuthPage.routeName}',
   routes: [
     GoRoute(
-      name: LoginPage.routeName,
-      path: '/${LoginPage.routeName}',
-      builder: (context, state) => const LoginPage(),
+      name: AuthPage.routeName,
+      path: '/${AuthPage.routeName}',
+      builder: (context, state) => const AuthPage(),
     ),
     GoRoute(
       name: DashboardPage.routeName,
@@ -23,7 +24,10 @@ final appRouter = GoRouter(
     GoRoute(
       name: MapPage.routeName,
       path: '/${MapPage.routeName}',
-      builder: (context, state) => const MapPage(),
+      builder: (context, state) {
+        final vehicles = state.extra as List<VehicleResult>;
+        return MapPage(vehicles: vehicles);
+      },
     ),
   ],
 );
