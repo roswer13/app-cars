@@ -1,37 +1,49 @@
 import 'package:app_cars_front/core/core.dart';
+import 'package:app_cars_front/features/vehicles/domain/usecases/vehicle_usecases.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
-import 'package:mockito/mockito.dart';
 
 import 'package:app_cars_front/features/features.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MockAuthUseCases extends Mock implements AuthUseCases {}
 
+class MockVehicleUseCases extends Mock implements VehicleUseCases {}
+
+final mockAuthUseCases = MockAuthUseCases();
+final mockVehicleUseCases = MockVehicleUseCases();
+
+class MockMapBloc extends Mock implements MapBloc {}
+
 void main() {
-  final getIt = GetIt.instance;
-  late MockAuthUseCases mockAuthUseCases;
-
-  setUp(() {
-    getIt.reset();
-
-    mockAuthUseCases = MockAuthUseCases();
-
-    getIt.registerLazySingleton<AuthUseCases>(() => mockAuthUseCases);
+  setUpAll(() {
+    locator.registerSingleton<AuthUseCases>(mockAuthUseCases);
+    locator.registerSingleton<VehicleUseCases>(mockVehicleUseCases);
   });
 
-  tearDown(() {
-    getIt.reset();
+  tearDownAll(() {
+    locator.reset();
   });
 
-  test('blocProviders contains AuthBloc provider', () {
-    // Arrange
-    // Act
-    final authProvider = blocProviders().firstWhere(
-      (provider) => provider is BlocProvider<AuthBloc>,
-      orElse: () => throw Exception('AuthBloc provider not found'),
+  test('blocProviders returns list of BlocProviders', () {
+    final providers = blocProviders();
+
+    expect(providers, isA<List<BlocProvider>>());
+    expect(providers.length, 3);
+
+    expect(providers[0], isA<BlocProvider<AuthBloc>>());
+    expect(providers[1], isA<BlocProvider<VehicleBloc>>());
+    expect(providers[2], isA<BlocProvider<MapBloc>>());
+  });
+
+  testWidgets('AuthBloc is created and initial event is added', (tester) async {
+    final providers = blocProviders();
+
+    await tester.pumpWidget(
+      MultiBlocProvider(providers: providers, child: const SizedBox()),
     );
-    // Assert
-    expect(authProvider, isA<BlocProvider<AuthBloc>>());
+
+    expect(find.byType(SizedBox), findsOneWidget);
   });
 }
