@@ -1,4 +1,6 @@
 import 'package:app_cars_front/core/core.dart';
+import 'package:app_cars_front/core/util/debouncer.dart';
+import 'package:app_cars_front/features/vehicles/domain/models/vehicle_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +18,11 @@ class VehiclePage extends StatefulWidget {
 
 class _VehiclePageState extends State<VehiclePage> {
   final ScrollController _scrollController = ScrollController();
+  final Debouncer _debouncer = Debouncer(milliseconds: 400);
   VehicleBloc? vehicleBloc;
+
+  List<VehicleResult> originalItems = [];
+  List<VehicleResult> filteredItems = [];
 
   @override
   void initState() {
@@ -35,11 +41,30 @@ class _VehiclePageState extends State<VehiclePage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _debouncer.dispose();
     super.dispose();
   }
 
   Future<void> _refreshData() async {
     vehicleBloc?.add(VehicleRefreshEvent());
+  }
+
+  void _onSearchChanged(String query) {
+    _debouncer.run(() {
+      setState(() {
+        if (query.isEmpty) {
+          filteredItems = List.from(originalItems);
+        } else {
+          filteredItems = originalItems
+              .where(
+                (item) =>
+                    item.plate.toLowerCase().contains(query.toLowerCase()) ||
+                    item.label.toLowerCase().contains(query.toLowerCase()),
+              )
+              .toList();
+        }
+      });
+    });
   }
 
   @override
@@ -60,19 +85,24 @@ class _VehiclePageState extends State<VehiclePage> {
               return Center(child: Text('No data available'));
             }
 
-            final items = state.vehicles ?? [];
+            originalItems = List.from(state.vehicles ?? []);
+            if (filteredItems.isEmpty ||
+                filteredItems.length == originalItems.length) {
+              filteredItems = List.from(originalItems);
+            }
 
             return Column(
               children: [
+                VehicleSearchBar(onChanged: _onSearchChanged),
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: _refreshData,
                     child: ListView.separated(
                       controller: _scrollController,
-                      itemCount: items.length,
+                      itemCount: filteredItems.length,
                       itemBuilder: (context, index) {
-                        if (index < items.length) {
-                          return VehicleItem(item: items[index]);
+                        if (index < filteredItems.length) {
+                          return VehicleItem(item: filteredItems[index]);
                         } else {
                           return const Padding(
                             padding: EdgeInsets.all(16),
@@ -88,7 +118,7 @@ class _VehiclePageState extends State<VehiclePage> {
                 ),
                 ButtonBase(
                   onPressed: () {
-                    context.push('/${MapPage.routeName}', extra: items);
+                    context.push('/${MapPage.routeName}', extra: filteredItems);
                   },
                   text: 'Ver a todos en el mapa',
                   width: double.infinity,

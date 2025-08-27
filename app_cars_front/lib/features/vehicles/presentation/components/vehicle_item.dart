@@ -17,11 +17,8 @@ class VehicleItem extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                item.label,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                '${item.plate} - ${item.label}',
+                style: const TextStyle(fontSize: 16),
               ),
             ),
             Container(
