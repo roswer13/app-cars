@@ -21,3 +21,9 @@ For production:
 ```bash
 flutter run --flavor prod -t lib/main_prod.dart
 ```
+
+## Run test
+
+```bash
+flutter test
+```

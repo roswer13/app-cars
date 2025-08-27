@@ -3,9 +3,6 @@ import 'package:app_cars_front/features/vehicles/domain/models/vehicle_response.
 
 abstract class VehicleEvent extends Equatable {
   const VehicleEvent();
-
-  @override
-  List<Object?> get props => [];
 }
 
 class VehicleLoadedEvent extends VehicleEvent {
