@@ -1,5 +1,6 @@
 import 'package:app_cars_front/core/core.dart';
 import 'package:app_cars_front/core/db/app_database.dart';
+import 'package:app_cars_front/features/auth/data/datasource/local/models/user_dao.dart';
 import 'package:app_cars_front/features/features.dart';
 import 'package:app_cars_front/features/vehicles/data/datasource/data/models/vehicle_dao.dart';
 import 'package:app_cars_front/features/vehicles/data/datasource/remote/vehicle_service.dart';
@@ -7,6 +8,7 @@ import 'package:app_cars_front/features/vehicles/data/repository/vehicle_reposit
 import 'package:app_cars_front/features/vehicles/domain/repository/vehicle_repository.dart';
 import 'package:app_cars_front/features/vehicles/domain/usecases/get_vehicles.dart';
 import 'package:app_cars_front/features/vehicles/domain/usecases/vehicle_usecases.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -25,6 +27,7 @@ Future<void> configureDependencies(Env envConfig) async {
   // Data base
   locator.registerLazySingleton(() => AppDatabase());
   locator.registerLazySingleton(() => VehiclesDao(locator<AppDatabase>()));
+  locator.registerLazySingleton(() => UsersDao(locator<AppDatabase>()));
 
   // Secure Storage
   locator.registerLazySingleton<FlutterSecureStorage>(
@@ -34,6 +37,10 @@ Future<void> configureDependencies(Env envConfig) async {
     () => SecureStorage(locator<FlutterSecureStorage>()),
   );
 
+  // Network
+  locator.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(locator()));
+  locator.registerLazySingleton(() => Connectivity());
+
   // Services
   locator.registerLazySingleton<AuthService>(() => AuthService(locator()));
   locator.registerLazySingleton<VehicleService>(
@@ -42,7 +49,11 @@ Future<void> configureDependencies(Env envConfig) async {
 
   // Repositories
   locator.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(locator()),
+    () => AuthRepositoryImpl(
+      locator<AuthService>(),
+      locator<UsersDao>(),
+      locator<NetworkInfo>(),
+    ),
   );
   locator.registerLazySingleton<VehicleRepository>(
     () => VehicleRepositoryImpl(

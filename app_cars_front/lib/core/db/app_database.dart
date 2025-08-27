@@ -1,3 +1,4 @@
+import 'package:app_cars_front/features/auth/data/datasource/local/models/users.dart';
 import 'package:app_cars_front/features/vehicles/data/datasource/data/models/vehicles.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
@@ -7,7 +8,7 @@ import 'package:path/path.dart' as p;
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [Vehicles])
+@DriftDatabase(tables: [Vehicles, Users])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

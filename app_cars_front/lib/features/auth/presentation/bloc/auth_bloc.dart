@@ -37,10 +37,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     var response = state.response as Success<TokenResponse>;
 
-    print('Account: ${state.account.value}');
-    print('Phone: ${state.phone.value}');
-    print('Token: ${response.data.token}');
-
     await authUseCases.saveUserSession.run(
       state.account.value,
       state.phone.value,
@@ -83,6 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       state.account.value,
       state.phone.value,
     );
+
     emit(state.copyWith(response: response, formKey: formKey));
   }
 
