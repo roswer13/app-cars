@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from core.models import User, Vehicule
+from core.models import User, Vehicule, Alert, Place
 
 
 @admin.register(User)
@@ -39,3 +39,19 @@ class VehiculeAdmin(admin.ModelAdmin):
     list_display = ['plate', 'label', 'status_color', 'last_update']
     search_fields = ['plate', 'label']
     readonly_fields = ['last_update']
+
+
+@admin.register(Alert)
+class AlertAdmin(admin.ModelAdmin):
+    """Define the admin pages for alerts."""
+    list_display = ['vehicle', 'created_at', 'level']
+    search_fields = ['vehicle__plate', 'message']
+    readonly_fields = ['created_at']
+    raw_id_fields = ['vehicle']
+
+
+@admin.register(Place)
+class PlaceAdmin(admin.ModelAdmin):
+    """Define the admin pages for places."""
+    list_display = ['name', 'phone', 'latitude', 'longitude']
+    search_fields = ['name', 'phone']

@@ -29,4 +29,6 @@ urlpatterns = [
     path('api/core/', include('core.urls')),
     path('api/user/', include('user.urls')),
     path('api/vehicule/', include('vehicule.urls')),
+    path('api/alert/', include('alert.urls')),
+    path('api/place/', include('place.urls')),
 ]
