@@ -6,7 +6,9 @@ from core.models import Vehicule
 
 
 class Alert(models.Model):
-    vehicle = models.ForeignKey(Vehicule, on_delete=models.CASCADE, related_name="alerts")
+    vehicle = models.ForeignKey(
+        Vehicule, on_delete=models.CASCADE, related_name="alerts"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     message = models.TextField()
     level = models.IntegerField(default=0)

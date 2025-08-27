@@ -51,13 +51,22 @@ class SeedView(APIView):
 
         for _ in range(300):
             v = random.choice(vehicles)
-            dt = now - timedelta(days=random.randint(0, 7), hours=random.randint(0, 23))
-            alerts.append(Alert(vehicle=v, level=random.randint(0, 7), created_at=dt))
+            dt = now - timedelta(
+                days=random.randint(0, 7), hours=random.randint(0, 23)
+            )
+            alerts.append(
+                Alert(vehicle=v, level=random.randint(0, 7), created_at=dt)
+            )
         Alert.objects.bulk_create(alerts)
 
-
         # Create places
-        storages_names = ["Taller Central", "Taller Norte", "Taller Sur", "Taller Este", "Taller Oeste"]
+        storages_names = [
+            "Taller Central",
+            "Taller Norte",
+            "Taller Sur",
+            "Taller Este",
+            "Taller Oeste"
+        ]
         notes = ["Lugar de servicio", "Punto de control", "Zona de riesgo"]
         places = []
         for i in range(20):

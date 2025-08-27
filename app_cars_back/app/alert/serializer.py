@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Alert, Vehicule
+from core.models import Alert
 from vehicule.serializer import VehicleSerializer
 
 
