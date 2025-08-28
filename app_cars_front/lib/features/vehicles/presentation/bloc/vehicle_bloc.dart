@@ -32,8 +32,7 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
     // String? url = state.nextUrl;
     // Resource<VehicleResponse> result = await vehicleUseCases.getVehicles.run(url);
 
-    Resource<List<VehicleResult>> result = await vehicleUseCases.getVehicles
-        .run(false);
+    Resource result = await vehicleUseCases.getVehicles.run(false);
 
     /*
     if (result is Success<VehicleResponse>) {
@@ -82,8 +81,7 @@ class VehicleBloc extends Bloc<VehicleEvent, VehicleState> {
       ),
     );
 
-    Resource<List<VehicleResult>> result = await vehicleUseCases.getVehicles
-        .run(true);
+    Resource result = await vehicleUseCases.getVehicles.run(true);
 
     if (result is Success<List<VehicleResult>>) {
       emit(

@@ -58,4 +58,17 @@ void main() {
       expect(event.props, []);
     });
   });
+
+  group('VehicleDeleteAllEvent', () {
+    test('supports value equality', () {
+      const event1 = VehicleDeleteAllEvent();
+      const event2 = VehicleDeleteAllEvent();
+      expect(event1, event2);
+    });
+
+    test('props are empty', () {
+      const event = VehicleDeleteAllEvent();
+      expect(event.props, []);
+    });
+  });
 }
